@@ -1,3 +1,4 @@
 /backend/__pycache__
 /backend/venv
-/mysql/mysql-data
+/backend/.idea
+/mysql/mysql-data/*
