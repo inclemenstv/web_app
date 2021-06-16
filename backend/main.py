@@ -5,7 +5,7 @@ from flask import jsonify
 from flask import flash, request
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/api/v1/add', methods=['POST'])
 def add_user():
     try:
         _json = request.json
@@ -32,7 +32,7 @@ def add_user():
         conn.close()
 
 
-@app.route('/users')
+@app.route('/api/v1/users')
 def users():
     try:
         conn = mysql.connect()
@@ -49,7 +49,7 @@ def users():
         conn.close()
 
 
-@app.route('/user/<int:id>')
+@app.route('/api/v1/user/<int:id>')
 def user(id):
     try:
         conn = mysql.connect()
@@ -67,7 +67,7 @@ def user(id):
         conn.close()
 
 
-@app.route('/update', methods=['PUT'])
+@app.route('/api/v1/update', methods=['PUT'])
 def update_user():
     try:
         _json = request.json
@@ -77,7 +77,7 @@ def update_user():
         # validate the received values
         if _name and _email and _id and request.method == 'PUT':
             # save edits
-            sql = "UPDATE tbl_user SET user_name=%s, user_email=%s WHERE user_id=%s"
+            sql = "UPDATE users SET user_name=%s, user_email=%s WHERE user_id=%s"
             data = (_name, _email, _id,)
             conn = mysql.connect()
             cursor = conn.cursor()
@@ -95,12 +95,12 @@ def update_user():
         conn.close()
 
 
-@app.route('/delete/<int:id>', methods=['DELETE'])
+@app.route('/api/v1/delete/<int:id>', methods=['GET', 'POST', 'DELETE'])
 def delete_user(id):
     try:
         conn = mysql.connect()
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM tbl_user WHERE user_id=%s", (id,))
+        cursor.execute("DELETE FROM users WHERE user_id=%s", id)
         conn.commit()
         resp = jsonify('User deleted successfully!')
         resp.status_code = 200
