@@ -2,3 +2,4 @@
 /backend/venv
 /backend/.idea
 /mysql/mysql-data/*
+/frontend/node_modules
