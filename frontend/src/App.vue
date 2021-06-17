@@ -23,13 +23,17 @@ export default {
     }
   },
   mounted() {
-    fetch('http://127.0.0.1:5000/api/v1/users')
+
+  this.fetchUsers()
+    },
+  methods: {
+   fetchUsers() {
+  fetch('http://127.0.0.1:5000/api/v1/users')
     .then(response => response.json())
     .then(json => {
         this.users = json
     })
   },
-  methods: {
    async removeUser(id) {
         this.users = this.users.filter(t => t.id !== id)
           const requestOptions = {
@@ -39,7 +43,7 @@ export default {
 
     },
     async addUser(user) {
-        this.users.push(user)
+
         const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -48,9 +52,10 @@ export default {
 
          const response = await fetch("http://127.0.0.1:5000/api/v1/add", requestOptions);
          const json = await response.json();
-         this.users = json;
+         this.fetchUsers()
     }
   },
+
   components: {
     UserList, AddUser
   }

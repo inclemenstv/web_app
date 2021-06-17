@@ -2,7 +2,7 @@
 <li>
    <span>
    <strong>{{index+1}}</strong>
-   {{user.name | uppercase }}
+   {{user.name}}
    {{user.email}}
    <button class="rm"
         v-on:click="$emit('remove-user', user.id)"
@@ -20,20 +20,17 @@ export default {
         },
         index: Number
     },
-    filters: {
-    uppercase(value) {
-      return value.toUpperCase()
-    }
-  }
+
 }
 </script>
 
 <style scoped>
   li {
-    border: 1px solid #ccc;
+    line-height: 3;
+    border: 2px solid #ccc;
     display: flex;
     justify-content: space-between;
-    padding: .5rem 2rem;
+    padding: .20rem 2rem;
     margin-bottom: 1rem;
   }
 
@@ -51,4 +48,5 @@ export default {
   .done {
     text-decoration: line-through;
   }
+
 </style>
