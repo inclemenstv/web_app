@@ -2,7 +2,8 @@
 <li>
    <span>
    <strong>{{index+1}}</strong>
-   {{user.name}}
+   {{user.name | uppercase }}
+   {{user.email}}
    <button class="rm"
         v-on:click="$emit('remove-user', user.id)"
    >&times;</button>
@@ -18,7 +19,12 @@ export default {
         required: true
         },
         index: Number
+    },
+    filters: {
+    uppercase(value) {
+      return value.toUpperCase()
     }
+  }
 }
 </script>
 

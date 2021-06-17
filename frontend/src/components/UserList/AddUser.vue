@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="onSubmit">
-    <input type="text" v-model="name">
-    <input type="text" v-model="email">
+    <input type="text" v-model="name" placeholder="New name">
+    <input :placeholder="Email" type="text" v-model="email" placeholder="New email">
     <button type="submit">Create</button>
   </form>
 </template>
@@ -17,7 +17,7 @@ export default {
   methods: {
     onSubmit() {
       console.log('Submit', this.name, this.email)
-      if (this.name.trim()) {
+      if (this.name.trim() && this.email.trim()) {
       const newUser = {
         id: Date.now(),
         name: this.name,

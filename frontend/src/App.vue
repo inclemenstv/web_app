@@ -23,7 +23,7 @@ export default {
     }
   },
   mounted() {
-    fetch('backend/api/v1/users')
+    fetch('http://127.0.0.1:5000/api/v1/users')
     .then(response => response.json())
     .then(json => {
         this.users = json
@@ -35,7 +35,7 @@ export default {
           const requestOptions = {
         method: "DELETE"
       };
-        const response = await fetch("http://localhost:5000/api/v1/delete/"+ id, requestOptions);
+        const response = await fetch("http://127.0.0.1:5000/api/v1/delete/"+ id, requestOptions);
 
     },
     async addUser(user) {
@@ -46,7 +46,7 @@ export default {
         body: JSON.stringify({ name: user.name, email: user.email })
   };
 
-         const response = await fetch("http://localhost:5000/api/v1/add", requestOptions);
+         const response = await fetch("http://127.0.0.1:5000/api/v1/add", requestOptions);
          const json = await response.json();
          this.users = json;
     }
