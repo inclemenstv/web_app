@@ -5,6 +5,12 @@ from flask import jsonify
 from flask import flash, request
 
 
+@app.route("/")
+def index():
+    """Function to test the functionality of the API"""
+    return "Web-app"
+
+
 @app.route('/api/v1/add', methods=['POST'])
 def add_user():
     try:
@@ -32,7 +38,7 @@ def add_user():
         conn.close()
 
 
-@app.route('/api/v1/users')
+@app.route('/api/v1/users', methods=["GET"])
 def users():
     try:
         conn = mysql.connect()
@@ -49,7 +55,7 @@ def users():
         conn.close()
 
 
-@app.route('/api/v1/user/<int:id>')
+@app.route('/api/v1/user/<int:id>', methods=["GET"])
 def user(id):
     try:
         conn = mysql.connect()
@@ -126,4 +132,4 @@ def not_found(error=None):
 
 if __name__ == "__main__":
     app.debug = True
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
