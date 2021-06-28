@@ -1,16 +1,19 @@
-FROM python:3.8.5-alpine
+FROM python:3.6-slim
 
-RUN apk add gcc musl-dev python3-dev libffi-dev openssl-dev
+RUN apt-get clean \
+    && apt-get -y update
 
-# We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /app/requirements.txt
+RUN apt-get -y install \
+    nginx \
+    python3-dev \
+    build-essential
+
 WORKDIR /app
 
-RUN pip install -r requirements.txt
+COPY requirements.txt /app/requirements.txt
+RUN pip install -r requirements.txt --src /usr/local/src
 
-COPY . /app
+COPY . .
 
 EXPOSE 5000
-
-ENTRYPOINT [ "python" ]
-CMD [ "main.py" ]
+CMD [ "python", "main.py" ]
