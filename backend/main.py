@@ -1,4 +1,5 @@
 import os
+import pymysql
 from flask import jsonify, request, Flask
 from flaskext.mysql import MySQL
 
@@ -52,7 +53,8 @@ def users():
     """Function to retrieve all users from the MySQL database"""
     try:
         conn = mysql.connect()
-        cursor = conn.cursor()
+        cursor = conn.cursor(pymysql.cursors.DictCursor)
+        # cursor = conn.cursor()
         cursor.execute("SELECT * FROM users")
         rows = cursor.fetchall()
         cursor.close()
@@ -64,7 +66,7 @@ def users():
         return jsonify(str(exception))
 
 
-@app.route("/api/v1/delete/<int:user_id>")
+@app.route("/api/v1/delete/<int:user_id>",  methods=['GET', 'POST', 'DELETE'])
 def delete_user(user_id):
     """Function to delete a user from the MySQL database"""
     try:
