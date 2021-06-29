@@ -27,11 +27,13 @@ export default {
   this.fetchUsers()
     },
   methods: {
-   fetchUsers() {
-  fetch('http://127.0.0.1:5000/api/v1/users')
+fetchUsers() {
+  fetch('http://192.168.50.11:30500/api/v1/users')
     .then(response => response.json())
     .then(json => {
-        this.users = json
+                 console.log(json);
+        this.users = json;
+                 console.log(this.users);
     })
   },
    async removeUser(id) {
@@ -39,7 +41,7 @@ export default {
           const requestOptions = {
         method: "DELETE"
       };
-        const response = await fetch("http://127.0.0.1:5000/api/v1/delete/"+ id, requestOptions);
+        const response = await fetch("http://192.168.50.11:30500/api/v1/delete/"+ id, requestOptions);
 
     },
     async addUser(user) {
@@ -50,7 +52,7 @@ export default {
         body: JSON.stringify({ name: user.name, email: user.email })
   };
 
-         const response = await fetch("http://127.0.0.1:5000/api/v1/add", requestOptions);
+         const response = await fetch("http://192.168.50.11:30500/api/v1/add", requestOptions);
          const json = await response.json();
          this.fetchUsers()
     }

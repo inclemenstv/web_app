@@ -2,8 +2,12 @@ import os
 import pymysql
 from flask import jsonify, request, Flask
 from flaskext.mysql import MySQL
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+CORS(app)
+
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 mysql = MySQL()
 
@@ -55,7 +59,8 @@ def users():
         conn = mysql.connect()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         # cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users")
+        cursor.execute("SELECT user_id id, user_name name, user_email email FROM users")
+        # cursor.execute("SELECT * FROM users")
         rows = cursor.fetchall()
         cursor.close()
         conn.close()
