@@ -1,7 +1,6 @@
 /backend/__pycache__
 /backend/venv
 /backend/.idea
-/mysql/mysql-data/*
 /frontend/node_modules
 /frontend/.idea
 .env
