@@ -12,7 +12,7 @@ pipeline {
             steps {
                 echo "Docker login..."
                 sh '''
-                   docker login 192.168.20.10:5000 -u admin -p admin
+                   docker login $DockerHub_Repository -u $DOCKERHUB_USR -p $DOCKERHUB_PSW
                 '''
             }
         }
@@ -21,10 +21,10 @@ pipeline {
                 echo "Start Build Backend and Frontend images..."
                 sh '''
                    cd backend
-                   docker build -t 192.168.20.10:5000/backend:latest .
+                   docker build -t $DockerHub_Repository/backend:latest .
                    cd ..
                    cd frontend
-                   docker build -t 192.168.20.10:5000/frontend:latest .
+                   docker build -t $DockerHub_Repository/frontend:latest .
                 '''
                 echo "Building......."
                 echo "End of Stage Build..."
@@ -34,8 +34,8 @@ pipeline {
             steps {
                 echo "Start push image..."
                 sh '''
-                   docker push 192.168.20.10:5000/backend:latest
-                   docker push 192.168.20.10:5000/frontend:latest
+                   docker push $DockerHub_Repository/backend:latest
+                   docker push $DockerHub_Repository/frontend:latest
                 '''
             }
         }
@@ -84,3 +84,4 @@ pipeline {
         }
     }
 }
+
