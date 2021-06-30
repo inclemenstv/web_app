@@ -50,6 +50,13 @@ pipeline {
         stage('5-Deploy') {
             steps {
                 echo "Start of Stage Deploy..."
+                script {
+                sh """sshpass -p vagrant ssh -tt -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$DEPLOY_HOST << EOF
+                    sudo docker login $DockerHub_Repository -u $DOCKERHUB_USR -p $DOCKERHUB_PSW
+                    kubectl get nodes
+                    exit
+                EOF"""
+                }
                 echo "Deploying..."
                 echo "End of Stage Deploy..."
             }
