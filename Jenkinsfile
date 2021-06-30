@@ -51,13 +51,6 @@ pipeline {
             steps {
                 echo "Start of Stage Deploy..."
                 echo "Deploying..."
-                script {
-                sh """
-                    ssh -tt -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$192.168.50.10<< EOF
-                   
-                    exit
-                EOF"""
-                }
                 echo "End of Stage Deploy..."
             }
         }
