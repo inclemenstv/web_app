@@ -18,20 +18,24 @@ pipeline {
         }
         stage('2-Create docker image') {
             steps {
-                echo "Start Build Backend image..."
+                echo "Start Build Backend and Frontend images..."
                 sh '''
                    cd backend
                    docker build -t 192.168.20.10:5000/backend:latest .
+                   cd ..
+                   cd frontend
+                   docker build -t 192.168.20.10:5000/frontend:latest .
                 '''
                 echo "Building......."
                 echo "End of Stage Build..."
             }
         }
-         stage('3-Push docker image') {
+         stage('3-Push docker images') {
             steps {
                 echo "Start push image..."
                 sh '''
-                   docker push $DOCKERHUB_USR/$DockerHub_Repository:latest
+                   docker push 192.168.20.10:5000/backend:latest
+                   docker push 192.168.20.10:5000/frontend:latest
                 '''
             }
         }
@@ -48,8 +52,10 @@ pipeline {
                 echo "Start of Stage Deploy..."
                 echo "Deploying..."
                 script {
-                sh """ssh -tt -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$DEPLOY_HOST << EOF
-                    sudo docker login -u $DOCKERHUB_USR -p $DOCKERHUB_PSW
+                sh """
+                    sudo apt-get install sshpass -y
+                    ssh -tt -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$192.168.50.10<< EOF
+                    sudo docker login 192.168.20.10:5000 -u admin -p admin
                     sudo docker stop web_app
                     sudo docker rm web_app
                     sudo docker rmi $DOCKERHUB_USR/$DockerHub_Repository:latest
