@@ -2,7 +2,7 @@
 <li>
    <span>
    <strong>{{index+1}}</strong>
-   {{user.user_name}}
+   {{user.name}}
    {{user.email}}
    <button class="rm"
         v-on:click="$emit('remove-user', user.id)"
