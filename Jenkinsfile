@@ -25,6 +25,7 @@ pipeline {
                    cd ..
                    cd frontend
                    docker build -t $DockerHub_Repository/frontend:latest .
+                   cd ..
                 '''
                 echo "Building......."
                 echo "End of Stage Build..."
@@ -51,9 +52,16 @@ pipeline {
             steps {
                 echo "Start of Stage Deploy..."
                 script {
-                sh """sshpass -p vagrant ssh -tt -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$DEPLOY_HOST << EOF
+                sh """
+                    sshpass -p vagrant scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no kubernetes/* vagrant@$DEPLOY_HOST:/home/vagrant
+
+                    sshpass -p vagrant ssh -tt -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$DEPLOY_HOST << EOF
                     sudo docker login $DockerHub_Repository -u $DOCKERHUB_USR -p $DOCKERHUB_PSW
-                    kubectl get nodes
+                    kubectl apply -f mysql-secret.yaml
+                    kubectl apply -f persistent-volume.yml
+                    kubectl apply -f mysql-deployment.yaml
+                    kubectl apply -f registry-secret.yaml
+                    kubectl apply -f web-app-deployment.yaml
                     exit
                 EOF"""
                 }
