@@ -18,9 +18,10 @@ pipeline {
         }
         stage('2-Create docker image') {
             steps {
-                echo "Start Build image..."
+                echo "Start Build Backend image..."
                 sh '''
-                   docker build . -t $DOCKERHUB_USR/$DockerHub_Repository:latest
+                   cd backend
+                   docker build -t 192.168.20.10:5000/backend:latest .
                 '''
                 echo "Building......."
                 echo "End of Stage Build..."
