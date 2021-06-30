@@ -53,13 +53,8 @@ pipeline {
                 echo "Deploying..."
                 script {
                 sh """
-                    sudo apt-get install sshpass -y
                     ssh -tt -i /var/lib/jenkins/.ssh/id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no vagrant@$192.168.50.10<< EOF
-                    sudo docker login 192.168.20.10:5000 -u admin -p admin
-                    sudo docker stop web_app
-                    sudo docker rm web_app
-                    sudo docker rmi $DOCKERHUB_USR/$DockerHub_Repository:latest
-                    sudo docker run -d -p 8080:80 --name web_app --restart unless-stopped $DOCKERHUB_USR/$DockerHub_Repository:latest
+                   
                     exit
                 EOF"""
                 }
