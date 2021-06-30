@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-backend
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: backend
+          image: 192.168.20.10:5000/backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          env:
+            - name: db_root_password
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: db_root_password
+            - name: db_name
+              value: users
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-app-frontend
+  labels:
+    app: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+        - name: registry-secret
+      containers:
+        - name: frontend
+          image: 192.168.20.10:5000/frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service-backend
+spec:
+  ports:
+  - port: 5000
+    protocol: TCP
+    nodePort: 30500
+  selector:
+    app: backend
+  type: NodePort
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-app-service-frontend
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    nodePort: 30800
+  selector:
+    app: frontend
+  type: NodePort
