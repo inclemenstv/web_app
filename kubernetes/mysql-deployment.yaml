@@ -73,5 +73,5 @@ data:
     ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
     INSERT INTO users VALUES (1, 'John Smith', 'John Smith.mail.com');
-    INSERT INTO users VALUES (2, 'Lilian Worksmith', Lilian Worksmith.gmail.com');
+    INSERT INTO users VALUES (2, 'Lilian Worksmith', 'Lilian Worksmith.gmail.com');
     INSERT INTO users VALUES (3, 'Michael Rupert','Michael Rupert@mail.com');
