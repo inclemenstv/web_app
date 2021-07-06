@@ -34,6 +34,9 @@ spec:
         - name: mysql-persistent-storage
           persistentVolumeClaim:
             claimName: mysql-pv-claim
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb-config
 
 
 ---
@@ -50,3 +53,22 @@ spec:
     name: mysql
   selector:
     app: db
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+data:
+  initdb.sql: |
+    CREATE DATABASE users;
+    USE users;
+    CREATE TABLE users ( user_id bigint COLLATE utf8mb4_unicode_ci NOT NULL AUTO_INCREMENT,
+    user_name varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    user_email varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+    PRIMARY KEY (user_id)
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+    INSERT INTO users VALUES (1, 'John Smith', 'John Smith.mail.com');
+    INSERT INTO users VALUES (2, 'Lilian Worksmith', Lilian Worksmith.gmail.com');
+    INSERT INTO users VALUES (3, 'Michael Rupert','Michael Rupert@mail.com');
