@@ -31,12 +31,13 @@ spec:
           - name: mysql-persistent-storage
             mountPath: /var/lib/mysql
       volumes:
-        - name: mysql-persistent-storage
-          persistentVolumeClaim:
-            claimName: mysql-pv-claim
         - name: mysql-initdb
           configMap:
             name: mysql-initdb-config
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
+
 
 
 ---
